@@ -19,7 +19,7 @@
 	<div class="reveal">
 		<div class="slides">
 
-			<section data-background-image="./img/title.png"></section>
+			<section data-background-image="./img/TITLE.png"></section>
 
 			<section>
 				<h2>Journey</h2>
@@ -63,15 +63,16 @@
 				<section>
 					<p>In 2008, Long & Shi define a ways to controle BSRN station. The metodology is called QCrad and
 						implemented into the BSRN toolbox.</p>
-					<img src="./img/longshi.png" alt="Long & Shi" height="100%S" width="100%">
+					<img src="./img/LONGNSHI.png" alt="Long & Shi" height="100%" width="100%">
 				</section>
 
 				<section>
-					<p> Long & Shi define different levels of data quality with flags. QC flag describe severity and
-						direction (too low or too hight) :</p>
+					<p> Long & Shi define different levels of data quality with flags. </p>
+					<br />
+					<p>QC flag describe severity and direction (too low or too hight) :</p>
 					<div class="r-stack">
-						<img src="./img/flagvalues.png">
-						<img class="fragment fade-in-then-out" src="./img/flagvalues2.png">
+						<img src="./img/FLAGVALUES1.png">
+						<img class="fragment fade-in-then-out" src="./img/FLAGVALUES2.png">
 					</div>
 				</section>
 
@@ -83,13 +84,13 @@
 							$$ S_a \times D_1 \times \mu_{0}^{1.2} + 55 Wm^{-2} (2^{nd} level) $$
 							$$ S_a \times 1.5 \times \mu_{0}^{1.2} + 100 Wm^{-2} (Physical\ limits) $$
 						</span>
-						<img class="fragment fade-right" src="./img/global.png">
+						<img class="fragment fade-right" src="./img/GLOBAL.png">
 					</div>
 
 				</section>
 
 				<section>
-					<blockquote>
+					<blockquote cite="Long & Shi (2008)">
 						"The question which arises now is the following : how can one determine these coefficients ?
 						Apparently there is no precise method or approach to be followed to determine the
 						coefficients
@@ -117,15 +118,15 @@
 					<div class="r-stack">
 						<span class="fragment fade-in-then-out">
 							<p>Inter quartile range (IQR)</p>
-							<img src="./img/iqr.png">
+							<img src="./img/IQR.png" width="1080px">
 						</span>
 						<span class="fragment fade-in-then-out">
 							<p>Z-Score</p>
-							<img src="./img/zscore.png">
+							<img src="./img/ZSCORE.png">
 						</span>
 						<span class="fragment fade-in-then-out">
 							<p>Isolation forest</p>
-							<img src="./img/forest.png" width="80%">
+							<img src="./img/ISOLATION.png" width="80%">
 						</span>
 					</div>
 				</section>
@@ -142,7 +143,7 @@
 
 				<section>
 					<p>The more neighbors a point has in its surroundings, the higher its density value.</p>
-					<img src="./img/kdeqc1.png" , width="60%">
+					<img src="./img/KDEQC1.png" , width="60%">
 					<p>Here, KDE on a two year datastet for Global. </p>
 				</section>
 
@@ -180,15 +181,7 @@
 					</aside>
 				</section>
 
-				<section>
-					<h2>Advantages / Limitations : </h2>
-					<ul>
-						<li>(+) Easy to compute</li>
-						<li>(+) Usable on other stations</li>
-						<li>(-) Empirical aspect on the choice of the threshold</li>
-					</ul>
-				</section>
-
+				
 				<section>
 					<h2> Resume of method</h2>
 					<ol>
@@ -198,9 +191,17 @@
 						<li>Test of a range of coeffs and calculation of F1 score</li>
 						<li>Selection of the best coefficient</li>
 					</ol>
-
+					
 				</section>
-
+				
+				<section>
+					<h2>Advantages / Limitations : </h2>
+					<ul>
+						<li>(+) Easy to compute</li>
+						<li>(+) Usable on other stations</li>
+						<li>(-) Empirical aspect on the choice of the threshold</li>
+					</ul>
+				</section>
 			</section>
 
 			<section>
@@ -212,7 +213,7 @@
 					<p>This module allows you to study the data and the
 						limits given by the coefficients thanks to visualization
 						and calculation tools.</p>
-					<img src="./img/github.png" width="80%">
+					<img src="./img/GITHUB.png" width="80%">
 				</section>
 
 				<section>
@@ -318,8 +319,8 @@
 							pl.limit_plot(df, qcf.QC2(), coefs)
 						</code>
 					</pre>
-					<img src="./img/limiteglobal.png" width="50%">
-					<img src="./img/limitedifuse.png" width="30%">
+					<img src="./img/LIMITEGLOBAL.png" width="50%">
+					<img src="./img/LIMITEDIFFUSE.png" width="30%">
 				</section>
 
 				<section>
@@ -330,7 +331,7 @@
 							log_kernel = pl.kde_computing(df, qcf.QC1())
 						</code>
 					</pre>
-					<img src="./img/kdeondata.png" width="50%">
+					<img src="./img/KDEONDATA.png" width="50%">
 				</section>
 
 				<section>
@@ -342,8 +343,8 @@
 							pl.plot_series_kde(df, log_kernel, qcf.QC1(), begin='2021-07-22', end='2021-07-24')
 						</code>
 					</pre>
-					<img src="./img/series1.png" width="50%">
-					<img src="./img/series2.png" width="30%">
+					<img src="./img/SERIES1.png" width="50%">
+					<img src="./img/SERIES2.png" width="30%">
 				</section>
 
 
@@ -355,7 +356,7 @@
 							df_var = cs.coef_variation(df, log_kernel, qcf.QC1())
 						</code>
 					</pre>
-					<img src="./img/helpers.png" width="60%">
+					<img src="./img/HELPERS.png" width="60%">
 				</section>
 
 				<section>
