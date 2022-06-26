@@ -1,40 +1,500 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<link rel="stylesheet" href="dist/reset.css">
-		<link rel="stylesheet" href="dist/reveal.css">
-		<link rel="stylesheet" href="dist/theme/black.css">
+	<title>reveal.js</title>
 
-		<!-- Theme used for syntax highlighted code -->
-		<link rel="stylesheet" href="plugin/highlight/monokai.css">
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
+	<link rel="stylesheet" href="dist/reset.css">
+	<link rel="stylesheet" href="dist/reveal.css">
+	<link rel="stylesheet" href="dist/theme/black.css">
+	<link rel="stylesheet" href="dist/theme/mystyle.css">
+	<link rel="stylesheet" href="plugin/highlight/monokai.css">
+
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+
+			<section data-background-image="./img/TITLE.png">
+
+			</section>
+
+			<section>
+				<h2>Journey</h2>
+				<ol>
+					<li>Quality control method</li>
+					<ul>
+						<li>Reminder of the Long & Shi Article</li>
+						<li>Empirical approach to estimate coefficients</li>
+					</ul>
+
+					<li>Coefficient study tools : pybsrnqc</li>
+					<ul>
+						<li>Different plot and displays</li>
+						<li>QCrad</li>
+						<li>Interactive tool to determine coefficient</li>
+						<li>Perspectives</li>
+					</ul>
+
+					<li>Application on PAL and RUN Station</li>
+				</ol>
+			</section>
+
+			<section>
+				<h2>Introduction</h2>
+				<br />
+				<p>The laboratory EnergyLab become BSRN station candidate in 2018.</p>
+				<p>We had to implement quality control assessment.</p>
+				<p>We decide to use Long & Shi article but some level depends of coefficients.</p>
+				<p>We hired Maelle Baronet from Ecole des Mines to work on the suject.</p>
+				<br />
+				<p>The report with full details is acceccible on <a
+						href="https://bsrn.awi.de/fileadmin/user_upload/bsrn.awi.de/Publications/Maelle_internship_report_2021.pdf">BSRN
+						Website</a>
+			</section>
+
+			<section>
+				<section>
+					<h1>Quality control method</h1>
+				</section>
+
+				<section>
+					<p>In 2008, Long & Shi define a ways to controle BSRN station. The metodology is called QCrad and
+						implemented into the BSRN toolbox.</p>
+					<img src="./img/LONGNSHI.png" alt="Long & Shi" height="100%" width="100%">
+				</section>
+
+				<section>
+					<p> Long & Shi define different levels of data quality with flags. </p>
+					<br />
+					<p>QC flag describe severity and direction (too low or too hight) :</p>
+					<div class="r-stack">
+						<img src="./img/FLAGVALUES1.png">
+						<img class="fragment fade-in-then-out" src="./img/FLAGVALUES2.png">
+					</div>
+				</section>
+
+				<section>
+					<p> 19 QC Rules explained, some coefficient dependent. Example here for global :</p>
+					<div class="r-stack">
+						<span class="fragment fade-in-then-out">
+							$$ S_a \times C_1 \times \mu_{0}^{1.2} + 50 Wm^{-2} (1^{st} level) $$
+							$$ S_a \times D_1 \times \mu_{0}^{1.2} + 55 Wm^{-2} (2^{nd} level) $$
+							$$ S_a \times 1.5 \times \mu_{0}^{1.2} + 100 Wm^{-2} (Physical\ limits) $$
+						</span>
+						<img class="fragment fade-right" src="./img/GLOBAL.png">
+					</div>
+
+				</section>
+
+				<section>
+					<blockquote cite="Long & Shi (2008)">
+						"The question which arises now is the following : how can one determine these coefficients ?
+						Apparently there is no precise method or approach to be followed to determine the
+						coefficients
+						of a given station."
+					</blockquote>
+				</section>
+			</section>
+
+			<section>
+				<section>
+					<h1> Empirical approach to estimate coefficients </h1>
+				</section>
+				<section>
+					<h2>Which points are outliers?</h2>
+					<br />
+					<p>Our definition :</p>
+					<p>
+						"Outliers are by definition infrequent observations, i.e. points that do not follow the
+						characteristic distribution of the rest of the data"
+					</p>
+				</section>
+
+				<section>
+					<h4>Some statistic methods to find outliers</h4>
+					<div class="r-stack">
+						<span class="fragment fade-in-then-out">
+							<p>Inter quartile range (IQR)</p>
+							<img src="./img/IQR.png" width="1080px">
+						</span>
+						<span class="fragment fade-in-then-out">
+							<p>Z-Score</p>
+							<img src="./img/ZSCORE.png">
+						</span>
+						<span class="fragment fade-in-then-out">
+							<p>Isolation forest</p>
+							<img src="./img/ISOLATION.png" width="80%">
+						</span>
+					</div>
+				</section>
+
+				<section>
+					<h3>Kernel Density Estimation (KDE)</h3>
+
+					<p>let $(x_1, ..., x_n)$ independent and identically distributed and $h>0$ a smoothing parameter.
+						The KDE is</p>
+					$$ \hat{f}_{h}(x) = \frac{1}{nh} \sum_{i=1}^{n} K(\frac{x - x_i}{h}) $$
+					with a gaussian kernel $ K(x) = \frac{1}{\sqrt{2 \pi}} e^{- \frac{1}{2} x^2} $
+
+				</section>
+
+				<section>
+					<p>The more neighbors a point has in its surroundings, the higher its density value.</p>
+					<img src="./img/KDEQC1.png" , width="60%">
+					<p>Here, KDE on a two year datastet for Global. </p>
+				</section>
+
+
+				<section>
+					<p>If we choose a thresold of KDE, and fix a coefficient, we can define the accuracy score of the QC
+						Rule
+						respecting the KDE threshold as </p>
+					<div class="r-stack">
+						<ul class="fragment fade-in-then-out">
+							<li>Counting the outliers detected by the curve</li>
+							<li>Comparing to outliers identified by the KDE</li>
+						</ul>
+						<p class="fragment fade-in-then-out">\[Accuracy = \frac{Correct\ Predictions}{All\
+							Predictions}\]</p>
+						<p class="fragment fade-in">\[Accuracy = \frac{TP + TN}{TP + TN + FP + FN}\]</p>
+					</div>
+					<p class="fragment fade-in">BUT : It will not work because we want to eleminate few points over a
+						large amount. Accuracy will grow with FN</p>
+				</section>
+
+				<section>
+					<p>So we define :</p>
+					<br />
+					<p>$Precision = \frac{TP}{TP + FP}$, tends to 1 when no FP</p>
+					<br />
+					<p>$ Recall = \frac{TP}{TP + FN}$, tends to 1 when no FN</p>
+					<br />
+					$$F1 = 2 \times \frac{Precision \times Recall}{Precision + Recall} $$
+					<br />
+					<p>with threshold fix, we keep the QC rules coefficients with the highest F1-score.</p>
+					<aside class="notes">
+						The F1 score is the harmonic mean of the precision and recall.
+						Voir sur Wiki le graph a integrer
+					</aside>
+				</section>
+
+				
+				<section>
+					<h2> Resume of method</h2>
+					<ol>
+						<li>Choice of the QC and the level studied</li>
+						<li>Computation on the Gaussian KDE on the dataset</li>
+						<li>Choice of the density threshold for outliers</li>
+						<li>Test of a range of coeffs and calculation of F1 score</li>
+						<li>Selection of the best coefficient</li>
+					</ol>
+					
+				</section>
+				
+				<section>
+					<h2>Advantages / Limitations : </h2>
+					<ul>
+						<li>(+) Easy to compute</li>
+						<li>(+) Usable on other stations</li>
+						<li>(-) Empirical aspect on the choice of the threshold</li>
+					</ul>
+				</section>
+			</section>
+
+			<section>
+				<section>
+					<h1> The library pybsrnqc </h1>
+				</section>
+
+				<section>
+					<p>This module allows you to study the data and the
+						limits given by the coefficients thanks to visualization
+						and calculation tools.</p>
+					<img src="./img/GITHUB.png" width="80%">
+				</section>
+
+				<section>
+					<p>Installation</p>
+					<pre class="bash">
+						<code data-line-numbers data-trim data-noescape>
+							// using pip 
+							pip install pybsrnqc
+						</code>
+					</pre>
+				</section>
+
+				<section>
+					<br />
+					<p> it's work on a repository containing monthly csv datafiles :</p>
+					<hr>
+					<br>
+					<table>
+						<thead>
+							<tr>
+								<th>timestamp</th>
+								<th>global2_avg</th>
+								<th>direct_avg</th>
+								<th>diffuse_avg</th>
+								<th>downward_avg</th>
+								<th>temperature</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>2019-08-01 00:00:00</td>
+								<td>145.1</td>
+								<td>665.300</td>
+								<td>69.340</td>
+								<td>365.65</td>
+								<td>25</td>
+							</tr>
+							<tr>
+								<td>...</td>
+								<td>...</td>
+								<td>...</td>
+								<td>...</td>
+								<td>...</td>
+								<td>...</td>
+							</tr>
+							<tr>
+								<td>2019-08-31 23:59:00</td>
+								<td>145.1</td>
+								<td>665.300</td>
+								<td>69.340</td>
+								<td>365.65</td>
+								<td>25</td>
+							</tr>
+						</tbody>
+					</table>
+				</section>
+
+				<section>
+					<p>Python imports</p>
+					<pre class="python">
+						<code data-line-numbers data-trim data-noescape>
+							from pybsrnqc import plot_limits as pl
+							from pybsrnqc import open_data as od
+							from pybsrnqc import qc_functions as qcf
+							from pybsrnqc import coef_study as cs
+							from pybsrnqc.config import Coef, Station
+						</code>
+					</pre>
+					<span class="fragment">
+						<p>You can define the location of your station,</p>
+						<pre class="python">
+							<code data-line-numbers data-trim data-noescape>
+								# Coefficients values and station location
+								station = Station()
+								station.LAT = 48.711951760391926
+								station.LON = 2.207638279957924
+								station.ALT = 159.0
+								station.TZ = "Europe/Paris"
+							</code>
+						</pre>
+					</span>
+					<span class="fragment">
+						<p>and import for your data.</p>
+						<pre class="python">
+							<code data-line-numbers data-trim data-noescape>
+								# Get datas
+								path = './dataset/'
+								df = od.open_all(path,period=['202105','202108'], station=station)
+							</code>
+						</pre>
+						<br>
+						<p>Function compute the SZA. Result into a dataframe (df).</p>
+					</span>
+				</section>
+
+				<section>
+					<p>And then plot standard limits on the loaded dataset</p>
+					<pre class="python">
+						<code data-line-numbers data-trim data-noescape>
+							# Plotting datas and BSRN limits
+							coefs = Coef()
+							pl.limit_plot(df, qcf.QC1(), coefs)
+							pl.limit_plot(df, qcf.QC2(), coefs)
+						</code>
+					</pre>
+					<img src="./img/LIMITEGLOBAL.png" width="50%">
+					<img src="./img/LIMITEDIFFUSE.png" width="30%">
+				</section>
+
+				<section>
+					<p> Compute the KDE for DF and choose a threshold</p>
+					<pre class="python">
+						<code data-line-numbers data-trim data-noescape>
+							# Calculating kernel density for the dataset
+							log_kernel = pl.kde_computing(df, qcf.QC1())
+						</code>
+					</pre>
+					<img src="./img/KDEONDATA.png" width="50%">
+				</section>
+
+				<section>
+					<p>You can even look at series over KDE</p>
+					<pre class="python">
+						<code data-line-numbers data-trim data-noescape>
+							# Plotting time series on a specific date
+							pl.plot_series_kde(df, log_kernel, qcf.QC1(), begin='2021-07-03', end='2021-07-04')
+							pl.plot_series_kde(df, log_kernel, qcf.QC1(), begin='2021-07-22', end='2021-07-24')
+						</code>
+					</pre>
+					<img src="./img/SERIES1.png" width="50%">
+					<img src="./img/SERIES2.png" width="30%">
+				</section>
+
+
+				<section>
+					<p>Helpers to decide whitch threshold</p>
+					<pre class="python">
+						<code data-line-numbers data-trim data-noescape>
+							# Observing the effect of the coefficient value over certain indicators 
+							df_var = cs.coef_variation(df, log_kernel, qcf.QC1())
+						</code>
+					</pre>
+					<img src="./img/HELPERS.png" width="60%">
+				</section>
+
+				<section>
+					<p>And then, you can finaly compute the best coefficient respecting threshold</p>
+					<pre class="python">
+						<code data-line-numbers data-trim data-noescape>
+							# Finding the best coefficient for a density threshold given 
+							df_score, score = cs.calc_coef(df, log_kernel, qcf.QC1(), threshold=-14, level='level_2')
+						</code>
+					</pre>
+
+					<pre class="text">
+						<code data-line-numbers data-trim data-noescape>
+							Upper limit
+											D1 	accuracy_score  precision_score  recall_score  f1_score
+							104	  1.04        0.999722         0.545455      0.666667       0.6
+						</code>
+					</pre>
+					<br />
+					<span class="fragment">
+						<p>An automatic way exist </p>
+						<pre class="python">
+							<code data-line-numbers data-trim data-noescape>
+								from pybsrnqc import coef_calculator as cc 
+								name_coef, coef = cc.compute('./dataset')
+							</code>
+						</pre>
+					</span>
+				</section>
+			</section>
+
+			<section>
+				<section>
+					<h1> Application on PAL and RUN Station </h1>
+				</section>
+
+				<section>
+					<p>we only study QC1 QC10</p>
+				</section>
+
+				<section>
+					<p>KDE QC1 : RUN (left) vs PAL (right)</p>
+					<img src="./img/KDE_RUN_QC1.png" , width="45%">
+					<img src="./img/KDE_PAL_QC1.png" , width="45%">
+				</section>
+
+				<section>
+					<p>KDE QC2 : RUN (left) vs PAL (right)</p>
+					<img src="./img/KDE_RUN_QC2.png" , width="45%">
+					<img src="./img/KDE_PAL_QC2.png" , width="45%">
+				</section>
+
+				<section>
+					<p>KDE QC3 : RUN (left) vs PAL (right)</p>
+					<img src="./img/KDE_RUN_QC3.png" , width="45%">
+					<img src="./img/KDE_PAL_QC3.png" , width="45%">
+				</section>
+
+				<section>
+					<p>KDE QC5 : RUN (left) vs PAL (right)</p>
+					<img src="./img/KDE_RUN_QC5.png" , width="45%">
+					<img src="./img/KDE_PAL_QC5.png" , width="45%">
+				</section>
+
+				<section>
+					<p>KDE QC10 : RUN (left) vs PAL (right)</p>
+					<img src="./img/KDE_RUN_QC10.png" , width="45%">
+					<img src="./img/KDE_PAL_QC10.png" , width="45%">
+				</section>
+
+				<section>
+					<p> Qc limit curves PAL vs La Reunion</p>
+				</section>
+
+				<section>
+					<p>tables of values for PAL vs La Reunion</p>
+				</section>
+
+			</section>
+
+
+			<section>
+				<h2>Conclusion</h2>
+				<ul>
+					<li class="fragment">Implementation of a method to find the user-configurable coeffs</li>
+					<li class="fragment">Methods based on statistical definition of outliers</li>
+					<li class="fragment">Python tools downloadable on pypi</li>
+					<li class="fragment">Not all QC implemented for studies for Ok for QCRad</li>
+					<li class="fragment">Methods have some limits</li>
+					<ul>
+						<li class="fragment">Arbitrary choice of threshold</li>
+						<li class="fragment">Self imposed contingent constrain using Long & Shi Rules</li>
+					</ul>
+					<li class="fragment"> The project remain in devellopment</li>
+				</ul>
+				<aside class="notes">
+					some points that could be considered as outliers are located
+					in areas that are not taken into account by the Long
+					and Shi equations.
+				</aside>
+			</section>
+
+			<section>
+				Merci.
+			</section>
 		</div>
+	</div>
 
-		<script src="dist/reveal.js"></script>
-		<script src="plugin/notes/notes.js"></script>
-		<script src="plugin/markdown/markdown.js"></script>
-		<script src="plugin/highlight/highlight.js"></script>
-		<script>
-			// More info about initialization & config:
-			// - https://revealjs.com/initialization/
-			// - https://revealjs.com/config/
-			Reveal.initialize({
-				hash: true,
+	<script src="dist/reveal.js"></script>
+	<script src="plugin/notes/notes.js"></script>
+	<script src="plugin/markdown/markdown.js"></script>
+	<script src="plugin/highlight/highlight.js"></script>
+	<script src="plugin/math/math.js"></script>
+	<script src="plugin/zoom/zoom.js"></script>
+	<script>
+		Reveal.initialize({
+			// The "normal" size of the presentation, aspect ratio will
+			// be preserved when the presentation is scaled to fit different
+			// resolutions. Can be specified using percentage units.
+			width: 1920,
+			height: 1080,
 
-				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
-			});
-		</script>
-	</body>
+			// Factor of the display size that should remain empty around
+			// the content
+			margin: 0.04,
+
+			// Bounds for smallest/largest possible scale to apply to content
+			minScale: 0.2,
+			maxScale: 2.0,
+
+			hash: true,
+			slideNumber: 'c/t',
+			touch: true,
+			plugins: [RevealZoom, RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX]
+		});
+	</script>
+</body>
+
 </html>
