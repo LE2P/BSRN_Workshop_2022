@@ -47,10 +47,10 @@
 			<section>
 				<h2>Introduction</h2>
 				<br />
-				<p>The laboratory EnergyLab become BSRN station candidate in 2018.</p>
+				<p>The laboratory EnergyLab becomes BSRN station candidate in 2018.</p>
 				<p>We had to implement quality control assessment.</p>
 				<p>We decide to use Long & Shi article but some level depends of coefficients.</p>
-				<p>We hired Maelle Baronet from Ecole des Mines to work on the suject.</p>
+				<p>We hired Maelle Baronet, Ecole des Mines post-graduate Engineering School to work on the suject.</p>
 				<br />
 				<p>The report with full details is acceccible on <a
 						href="https://bsrn.awi.de/fileadmin/user_upload/bsrn.awi.de/Publications/Maelle_internship_report_2021.pdf">BSRN
@@ -65,13 +65,13 @@
 				<section>
 					<p>In 2008, Long & Shi define a ways to controle BSRN station. The metodology is called QCrad and
 						implemented into the BSRN toolbox.</p>
-					<img src="./img/LONGNSHI.png" alt="Long & Shi" height="100%" width="100%">
+					<img src="./img/LONGNSHI.png" alt="Long & Shi" width="80%">
 				</section>
 
 				<section>
 					<p> Long & Shi define different levels of data quality with flags. </p>
 					<br />
-					<p>QC flag describe severity and direction (too low or too hight) :</p>
+					<p>QC flag describe the severity and direction (too low or too hight) :</p>
 					<div class="r-stack">
 						<img src="./img/FLAGVALUES1.png">
 						<img class="fragment fade-in-then-out" src="./img/FLAGVALUES2.png">
@@ -95,8 +95,7 @@
 					<blockquote cite="Long & Shi (2008)">
 						"The question which arises now is the following : how can one determine these coefficients ?
 						Apparently there is no precise method or approach to be followed to determine the
-						coefficients
-						of a given station."
+						coefficients of a given station."
 					</blockquote>
 				</section>
 			</section>
@@ -151,7 +150,7 @@
 
 
 				<section>
-					<p>If we choose a thresold of KDE, and fix a coefficient, we can define the accuracy score of the QC
+					<p>If we choose a KDE threshold, and fix a coefficient, we can define the accuracy score of the QC
 						Rule
 						respecting the KDE threshold as </p>
 					<div class="r-stack">
@@ -163,29 +162,31 @@
 							Predictions}\]</p>
 						<p class="fragment fade-in">\[Accuracy = \frac{TP + TN}{TP + TN + FP + FN}\]</p>
 					</div>
-					<p class="fragment fade-in">BUT : It will not work because we want to eleminate few points over a
+					<p class="fragment fade-in">BUT : it will not work because we want to eliminate a few points over a
 						large amount. Accuracy will grow with FN</p>
 				</section>
 
 				<section>
 					<p>So we define :</p>
 					<br />
-					<p>$Precision = \frac{TP}{TP + FP}$, tends to 1 when no FP</p>
+					<p>$Precision = \frac{TP}{TP + FP}$, tends toward 1 when no FP</p>
 					<br />
-					<p>$ Recall = \frac{TP}{TP + FN}$, tends to 1 when no FN</p>
-					<br />
-					$$F1 = 2 \times \frac{Precision \times Recall}{Precision + Recall} $$
-					<br />
-					<p>with threshold fix, we keep the QC rules coefficients with the highest F1-score.</p>
+					<p class="fragment">$ Recall = \frac{TP}{TP + FN}$, tends toward 1 when no FN</p>
+					<div class="fragment">
+						<br />
+						$$F1 = 2 \times \frac{Precision \times Recall}{Precision + Recall} $$
+						<br />
+						<p>with a fix threshold, we keep the QC rules coefficients with the highest F1-score.</p>
+					</div>
 					<aside class="notes">
 						The F1 score is the harmonic mean of the precision and recall.
 						Voir sur Wiki le graph a integrer
 					</aside>
 				</section>
 
-				
+
 				<section>
-					<h2> Resume of method</h2>
+					<h2> Method summary</h2>
 					<ol>
 						<li>Choice of the QC and the level studied</li>
 						<li>Computation on the Gaussian KDE on the dataset</li>
@@ -193,9 +194,9 @@
 						<li>Test of a range of coeffs and calculation of F1 score</li>
 						<li>Selection of the best coefficient</li>
 					</ol>
-					
+
 				</section>
-				
+
 				<section>
 					<h2>Advantages / Limitations : </h2>
 					<ul>
@@ -208,14 +209,14 @@
 
 			<section>
 				<section>
-					<h1> The library pybsrnqc </h1>
+					<h1>The pybsrnqc library</h1>
 				</section>
 
 				<section>
 					<p>This module allows you to study the data and the
 						limits given by the coefficients thanks to visualization
 						and calculation tools.</p>
-					<img src="./img/GITHUB.png" width="80%">
+					<img src="./img/GITHUB.png" width="60%">
 				</section>
 
 				<section>
@@ -230,11 +231,9 @@
 
 				<section>
 					<br />
-					<p> it's work on a repository containing monthly csv datafiles :</p>
-					<hr>
-					<br>
+					<p>It operates on a repository containing monthly csv datafiles :</p>
+					<br />
 					<table>
-						<thead>
 							<tr>
 								<th>timestamp</th>
 								<th>global2_avg</th>
@@ -243,8 +242,6 @@
 								<th>downward_avg</th>
 								<th>temperature</th>
 							</tr>
-						</thead>
-						<tbody>
 							<tr>
 								<td>2019-08-01 00:00:00</td>
 								<td>145.1</td>
@@ -254,12 +251,12 @@
 								<td>25</td>
 							</tr>
 							<tr>
-								<td>...</td>
-								<td>...</td>
-								<td>...</td>
-								<td>...</td>
-								<td>...</td>
-								<td>...</td>
+								<td>[...]</td>
+								<td>[...]</td>
+								<td>[...]</td>
+								<td>[...]</td>
+								<td>[...]</td>
+								<td>[...]</td>
 							</tr>
 							<tr>
 								<td>2019-08-31 23:59:00</td>
@@ -269,7 +266,6 @@
 								<td>365.65</td>
 								<td>25</td>
 							</tr>
-						</tbody>
 					</table>
 				</section>
 
@@ -298,10 +294,10 @@
 						</pre>
 					</span>
 					<span class="fragment">
-						<p>and import for your data.</p>
+						<p>and import your data.</p>
 						<pre class="python">
 							<code data-line-numbers data-trim data-noescape>
-								# Get datas
+								# Get data
 								path = './dataset/'
 								df = od.open_all(path,period=['202105','202108'], station=station)
 							</code>
@@ -315,7 +311,7 @@
 					<p>And then plot standard limits on the loaded dataset</p>
 					<pre class="python">
 						<code data-line-numbers data-trim data-noescape>
-							# Plotting datas and BSRN limits
+							# Plotting data and BSRN limits
 							coefs = Coef()
 							pl.limit_plot(df, qcf.QC1(), coefs)
 							pl.limit_plot(df, qcf.QC2(), coefs)
@@ -351,7 +347,7 @@
 
 
 				<section>
-					<p>Helpers to decide whitch threshold</p>
+					<p>Helpers to decide which threshold</p>
 					<pre class="python">
 						<code data-line-numbers data-trim data-noescape>
 							# Observing the effect of the coefficient value over certain indicators 
@@ -362,7 +358,7 @@
 				</section>
 
 				<section>
-					<p>And then, you can finaly compute the best coefficient respecting threshold</p>
+					<p>And then, you can finally compute the best coefficient respecting threshold</p>
 					<pre class="python">
 						<code data-line-numbers data-trim data-noescape>
 							# Finding the best coefficient for a density threshold given 
@@ -396,7 +392,7 @@
 				</section>
 
 				<section>
-					<p>we only study QC1 QC10</p>
+					<h2>Let compare KDE for both site</h2>
 				</section>
 
 				<section>
@@ -430,11 +426,77 @@
 				</section>
 
 				<section>
-					<p> Qc limit curves PAL vs La Reunion</p>
+					<h2>Studie of QC2 for PAL</h2>
 				</section>
 
 				<section>
-					<p>tables of values for PAL vs La Reunion</p>
+					<p>Lets plot classical limit for continetal data</p>
+					<img src="./img/PALQC2STUDY0.png" width="40%">
+					<img src="./img/PALQC2STUDY1.png" width="40%">
+				</section>
+
+				<section>
+					<p>Some stats to estimate threshold</p>
+					<img src="./img/PALQC2STUDY2.png" width="70%">
+				</section>
+
+				<section>
+					<p>What ?!</p>
+					<img src="./img/PALQC2STUDY3.png" width="70%">
+				</section>
+
+				<section>
+					<p>So it seems methods has quite of limitation but it help us to find set of cefficients for RUN :
+					</p>
+					<table>
+
+						<tr>
+							<th>QC Rule</th>
+							<th>1st level</th>
+							<th>2nd level</th>
+						</tr>
+
+						<tr>
+							<td>QC1</td>
+							<td>$C_1 = 0.96$</td>
+							<td>$D_1 = 1.09$</td>
+						</tr>
+						<tr>
+							<td>QC2</td>
+							<td>$C_2 = 0.52$</td>
+							<td>$D_2 = 0.60$</td>
+						</tr>
+						<tr>
+							<td>QC3</td>
+							<td>$C_3 = 0.76$</td>
+							<td>$D_3 = 0.80$</td>
+						</tr>
+						<tr>
+							<td>QC5 min</td>
+							<td>$C_5 = 315$</td>
+							<td>$D_5 = 308$</td>
+						</tr>
+						<tr>
+							<td>QC5 max</td>
+							<td>$C_6 = 450$</td>
+							<td>$D_6 = 457$</td>
+						</tr>
+						<tr>
+							<td>QC10 min</td>
+							<td>$C_{11} = 0.73$</td>
+							<td>$D_{11} = 0.70$</td>
+						</tr>
+						<tr>
+							<td>QC10 max</td>
+							<td>$C_{12} = 0.20$</td>
+							<td>$D_{12} = 3.30$</td>
+						</tr>
+					</table>
+
+					<p class="fragment">Eventually, the whole purpose of the method was to study our dataset and quality
+						of our data.</p>
+					<p class="fragment">Said otherwise, the journey was more important than the tools we created</p>
+
 				</section>
 
 			</section>
@@ -446,14 +508,21 @@
 					<li class="fragment">Implementation of a method to find the user-configurable coeffs</li>
 					<li class="fragment">Methods based on statistical definition of outliers</li>
 					<li class="fragment">Python tools downloadable on pypi</li>
-					<li class="fragment">Not all QC implemented for studies for Ok for QCRad</li>
-					<li class="fragment">Methods have some limits</li>
+					<li class="fragment">Not all QC implemented in the studies. But all QCRad acceccible</li>
+					<li class="fragment">Methods have some limits :</li>
 					<ul>
 						<li class="fragment">Arbitrary choice of threshold</li>
+						<li class="fragment">Need to clean data as for PAL station</li>
 						<li class="fragment">Self imposed contingent constrain using Long & Shi Rules</li>
 					</ul>
-					<li class="fragment"> The project remain in devellopment</li>
+					<li class="fragment"> The project remain in development</li>
 				</ul>
+				<br />
+				<br />
+				<blockquote class="fragment">
+					"Apparently there is no precise method or approach to be followed to determine the
+					coefficients of a given station."
+				</blockquote>
 				<aside class="notes">
 					some points that could be considered as outliers are located
 					in areas that are not taken into account by the Long
@@ -494,6 +563,15 @@
 			touch: true,
 			plugins: [RevealZoom, RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX]
 		});
+
+		window.addEventListener("mousedown", handleClick, false);
+		window.addEventListener("contextmenu", function (e) { e.preventDefault(); }, false);
+
+		function handleClick(e) {
+			e.preventDefault();
+			if (e.button === 1) Reveal.next();
+			if (e.button === 2) Reveal.prev();
+		}
 	</script>
 </body>
 
